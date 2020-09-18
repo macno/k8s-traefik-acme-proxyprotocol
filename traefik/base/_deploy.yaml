@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - image: traefik
+          name: traefik
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+            - name: https
+              containerPort: 443
+            - name: admin
+              containerPort: 8080
+          args:
+            - "--global.checknewversion=false"
+            - "--log.level=DEBUG"
+            - "--api.insecure=false"
+            - "--providers.kubernetesingress=true"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.websecure.address=:443"
+            - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+            - "--certificatesresolvers.le-httpchallenge-prod.acme.email=test@test.it"
+            - "--certificatesresolvers.le-httpchallenge-prod.acme.storage=/ssl/acme-proxy.json"
+            - "--certificatesresolvers.le-httpchallenge-prod.acme.tlschallenge=true"
+          volumeMounts:
+            - mountPath: /ssl
+              name: ssl
+      restartPolicy: Always
+      volumes:
+        - persistentVolumeClaim:
+            claimName: traefik
+          name: ssl

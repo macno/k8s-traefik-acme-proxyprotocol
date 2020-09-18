@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: whoami
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: le-httpchallenge-prod
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: whoami
+              servicePort: web

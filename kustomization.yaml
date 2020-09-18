@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- load-balancers/_traefik_no_proxy.yaml
+- load-balancers/_traefik_proxy.yaml
+- traefik/common
+- traefik/overlays/proxy
+- traefik/overlays/no-proxy
+- whoami/overlays/proxy
+- whoami/overlays/no-proxy

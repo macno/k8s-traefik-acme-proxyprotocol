@@ -1,0 +1,7 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - _ns.yaml
+  - _whoami_deploy.yaml
+  - _whoami_service.yaml
+  - _whoami_ingress.yaml

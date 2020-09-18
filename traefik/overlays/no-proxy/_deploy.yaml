@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: traefik-no-proxy
+  name: traefik
+spec:
+  selector:
+    matchLabels:
+      app: traefik-no-proxy
+  template:
+    metadata:
+      labels:
+        app: traefik-no-proxy
